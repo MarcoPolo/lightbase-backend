@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <h1>Lightbase</h1>
+        <p> Lightbase name: </p>
+        <input id="lightbase" type="text"/>
+        <p> Your data: </p>
+        <input id="lbdata" type="text"/>
+        <p> The Lightbase Data</p>
+        <section id="content"></section>
+        <script src="http://www.google.com/jsapi"></script>
+        <script>google.load("jquery", "1.3")</script>
+        <script src="http://jquery-json.googlecode.com/files/jquery.json-2.2.min.js">
+        </script>
+        <script src="http://jquery-websocket.googlecode.com/files/jquery.websocket-0.0.1.js">
+        </script>
+        <script>
+            var ws = $.websocket("ws://127.0.0.1:8080/websocket", {
+            events: { 
+                updateclient: function(e) {
+                    $("#content").html(e.message); }}});
+
+            $('#lightbase').change(function(){
+                ws.send('register', {lightbase: $('#lightbase').val(), message: $("#lbdata").val()});});
+            $('#lbdata').change(function(){
+                ws.send('update', {lightbase: $('#lightbase').val(), message: $("#lbdata").val()});});
+      </script>
+  </body>
+</html>
